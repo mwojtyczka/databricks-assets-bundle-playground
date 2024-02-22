@@ -6,13 +6,10 @@ name: "dev deployment"
 # runs at a time.
 concurrency: 1
 
-# Trigger this workflow whenever a pull request is opened against the repo's
-# main branch or an existing pull request's head branch is updated.
+# Trigger this workflow whenever a pull request is pushed to the repo's
+# main branch.
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
+  push:
     branches:
       - main
 
