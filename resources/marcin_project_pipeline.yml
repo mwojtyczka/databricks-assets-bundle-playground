@@ -1,0 +1,12 @@
+# The main pipeline for marcin_project
+resources:
+  pipelines:
+    marcin_project_pipeline:
+      name: marcin_project_pipeline
+      target: marcin_project_${bundle.environment}
+      libraries:
+        - notebook:
+            path: ../src/dlt_pipeline.ipynb
+
+      configuration:
+        bundle.sourcePath: /Workspace/${workspace.file_path}/src
