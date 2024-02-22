@@ -1,5 +1,5 @@
 from pyspark.sql import SparkSession
-from functions import filter_taxis
+from marcin_project.functions import filter_taxis
 
 
 def get_taxis():
