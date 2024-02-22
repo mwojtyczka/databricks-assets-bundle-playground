@@ -3,6 +3,12 @@
 bundle:
   name: marcin_project
 
+artifacts:
+  default:
+    type: whl
+    build: poetry build
+    path: .
+
 include:
   - resources/*.yml
 

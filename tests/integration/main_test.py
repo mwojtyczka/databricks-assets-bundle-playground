@@ -4,7 +4,10 @@ from marcin_project import main
 
 # Create a new Databricks Connect session. If this fails,
 # check that you have configured Databricks Connect correctly.
-# See https://docs.databricks.com/dev-tools/databricks-connect.html.
+# See https://docs.databricks.com/dev-tools/databricks-connect.html
+
+# Take connection from .databrikcscfg file, DEFAULT profile)
+# https://docs.databricks.com/dev-tools/databricks-connect-ref.html#requirements
 
 SparkSession.builder = DatabricksSession.builder
 SparkSession.builder.getOrCreate()

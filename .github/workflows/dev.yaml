@@ -1,3 +1,5 @@
+# Based on: https://learn.microsoft.com/en-us/azure/databricks/dev-tools/bundles/ci-cd
+
 # This workflow validates, deploys, and runs the specified bundle
 # within a pre-production target named "dev".
 name: "dev deployment"
