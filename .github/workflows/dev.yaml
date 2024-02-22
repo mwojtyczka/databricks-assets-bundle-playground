@@ -31,6 +31,9 @@ jobs:
       # See https://github.com/databricks/setup-cli
       - uses: databricks/setup-cli@main
 
+      # Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
+      - run: curl -sSL https://install.python-poetry.org | python3 -
+
       # Deploy the bundle to the "dev" target as defined
       # in the bundle's settings file.
       - run: databricks bundle deploy
@@ -55,6 +58,9 @@ jobs:
 
       # Use the downloaded Databricks CLI.
       - uses: databricks/setup-cli@main
+
+      # Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
+      - run: curl -sSL https://install.python-poetry.org | python3 -
 
       # Run the Databricks workflow named "my-job" as defined in the
       # bundle that was just deployed.
