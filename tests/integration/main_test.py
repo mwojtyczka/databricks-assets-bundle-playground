@@ -9,11 +9,9 @@ from marcin_project import main
 
 # Take connection from .databrikcscfg file, DEFAULT profile)
 # https://docs.databricks.com/dev-tools/databricks-connect-ref.html#requirements
-spark = DatabricksSession.builder.getOrCreate()
+spark = DatabricksSession.builder.getOrCreate()  # provide profile optionally: .profile("profile_name")
 
-#SparkSession.builder = DatabricksSession.builder.profile("profile_name")
-#spark = SparkSession.builder.getOrCreate()
-
+# Build explicitly
 # spark = DatabricksSession.builder.remote(
 #    host=f"XXX",
 #    token="xxx",
