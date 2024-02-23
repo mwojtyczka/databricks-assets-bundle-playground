@@ -18,7 +18,7 @@ resources:
           job_cluster_key: job_cluster
           notebook_task:
             notebook_path: ./src/notebook.ipynb
-            source: GIT
+            source: GIT #WORKSPACE
         
         - task_key: refresh_pipeline
           depends_on:
@@ -33,7 +33,6 @@ resources:
           python_wheel_task:
             package_name: marcin_project
             entry_point: main
-          source: WORKSPACE
           libraries:
             # By default we just include the .whl file generated for the marcin_project package.
             # See https://docs.databricks.com/dev-tools/bundles/library-dependencies.html
