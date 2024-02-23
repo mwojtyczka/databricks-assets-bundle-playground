@@ -15,9 +15,9 @@ spark = DatabricksSession.builder.getOrCreate()
 #spark = SparkSession.builder.getOrCreate()
 
 # spark = DatabricksSession.builder.remote(
-#    host=f"https://adb-8870486534760962.2.azuredatabricks.net/?o=8870486534760962",
+#    host=f"XXX",
 #    token="xxx",
-#    cluster_id="0222-221408-a9yml4v"
+#    cluster_id="xxx"
 # ).getOrCreate()
 
 def test_main():
