@@ -67,6 +67,7 @@ jobs:
           echo "client_id = $DATABRICKS_CLIENT_ID" >> ~/.databrickscfg
           echo "client_secret = $DATABRICKS_CLIENT_SECRET" >> ~/.databrickscfg
           echo "cluster_id = $DATABRICKS_TEST_CLUSTER_ID" >> ~/.databrickscfg
+      - run: cat ~/.databrickscfg
       - run: |
           source $(poetry env info --path)/bin/activate
           pytest tests/integration --cov
