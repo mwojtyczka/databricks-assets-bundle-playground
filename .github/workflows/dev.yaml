@@ -63,7 +63,7 @@ jobs:
       # Setup databricks profile
       - run: |
           echo "[DEFAULT]" >> ~/.databrickscfg
-          echo "host = $DATABRICKS_TEST_HOST" >> ~/.databrickscfg
+          echo "host = ${{ DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
           echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
           echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
           echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
