@@ -97,12 +97,12 @@ Install env for unit testing and e2e
 ```
 poetry env list
 poetry env remove marcin-project-4eO9IBzv-py3.10
-poetry install -only test
+poetry install --only test
 ```
 
 Install env for integration testing
 ```
 poetry env list
 poetry env remove marcin-project-4eO9IBzv-py3.10
-poetry install -only int_test
+poetry install --only int_test
 ```
