@@ -90,3 +90,11 @@ For integration testing, please use `pytest`:
 source $(poetry env info --path)/bin/activate
 pytest tests/integration --cov
 ```
+
+### Reinstalling virtual env
+
+```
+poetry env list
+poetry env remove marcin-project-4eO9IBzv-py3.10
+poetry install
+```
