@@ -63,7 +63,7 @@ jobs:
       # Setup databricks profile
       - run: |
           echo "[DEFAULT]" >> ~/.databrickscfg
-          echo "host = ${{ DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
+          echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
           echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
           echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
           echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
@@ -94,6 +94,14 @@ jobs:
       - run: poetry install
 
       - run: databricks bundle deploy
+        # Setup databricks profile
+      - run: |
+          echo "[DEFAULT]" >> ~/.databrickscfg
+          echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
+          echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
+          echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
+          echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
+      - run: cat ~/.databrickscfg
       - run: |
           source $(poetry env info --path)/bin/activate
           pytest tests/e2e --cov
