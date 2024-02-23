@@ -5,7 +5,7 @@ from chispa.dataframe_comparer import *
 from pyspark.sql import SparkSession
 
 # instead of using pytest-spark
-#spark = SparkSession.builder.getOrCreate()
+#spark_session = SparkSession.builder.getOrCreate()
 
 def test_get_taxi(spark_session: SparkSession): # using pytest-spark
     schema = "trip_distance: double, fare_amount: double"
