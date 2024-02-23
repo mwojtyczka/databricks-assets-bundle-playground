@@ -1,3 +1,5 @@
+# This test setup spark in local mode
+
 from marcin_project import functions
 from chispa.dataframe_comparer import *
 from pyspark.sql import SparkSession

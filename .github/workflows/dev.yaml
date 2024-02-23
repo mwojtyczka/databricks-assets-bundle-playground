@@ -92,7 +92,7 @@ jobs:
       # Install test dependencies
       - run: poetry install --only test
 
-      - run: databricks bundle build
+      - run: databricks bundle deploy
       - run: |
           source $(poetry env info --path)/bin/activate
           pytest tests/e2e --cov
@@ -132,7 +132,7 @@ jobs:
 
   # Validate, deploy, and then run the bundle.
   pipeline_update:
-    name: "Run pipeline"
+    name: "Run Jobs"
     runs-on: ubuntu-latest
 
     # Run the "deploy" job first.

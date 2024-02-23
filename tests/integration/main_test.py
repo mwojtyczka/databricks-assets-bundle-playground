@@ -1,5 +1,6 @@
+# this test uses Databricks Connect
+
 from databricks.connect import DatabricksSession
-from pyspark.sql import SparkSession
 from marcin_project import main
 
 # Create a new Databricks Connect session. If this fails,
@@ -15,11 +16,10 @@ spark = DatabricksSession.builder.getOrCreate()
 
 # spark = DatabricksSession.builder.remote(
 #    host=f"https://adb-8870486534760962.2.azuredatabricks.net/?o=8870486534760962",
-#    token="dapi03fec0a64fcc088adc1a27864050a598-2",
+#    token="xxx",
 #    cluster_id="0222-221408-a9yml4v"
 # ).getOrCreate()
 
 def test_main():
     taxis = main.get_taxis(spark)
     assert taxis.count() > 5
-
