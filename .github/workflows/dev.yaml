@@ -16,6 +16,84 @@ on:
       - main
 
 jobs:
+  build-and-ut:
+    name: "Building and Running tests"
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out this repo, so that this workflow can access it.
+      - uses: actions/checkout@v3
+
+      # Download the Databricks CLI.
+      # See https://github.com/databricks/setup-cli
+      - uses: databricks/setup-cli@main
+
+      # Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
+      - run: curl -sSL https://install.python-poetry.org | python3 -
+
+      # Install test dependencies
+      - run: poetry install -only test
+
+      - run: databricks bundle build
+      - run: |
+          source $(poetry env info --path)/bin/activate
+          pytest tests/unit --cov
+
+  integration-test:
+    name: "Building and Running tests"
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out this repo, so that this workflow can access it.
+      - uses: actions/checkout@v3
+
+      # Download the Databricks CLI.
+      # See https://github.com/databricks/setup-cli
+      - uses: databricks/setup-cli@main
+
+      # Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
+      - run: curl -sSL https://install.python-poetry.org | python3 -
+
+      # Install test dependencies
+      - run: poetry install -only int_test
+
+      # Setup databricks profile
+      - run: |
+          echo "[DEFAULT]" >> ~/.databrickscfg
+          echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
+          echo "client_id = $DATABRICKS_CLIENT_ID" >> ~/.databrickscfg
+          echo "client_secret = $DATABRICKS_CLIENT_SECRET" >> ~/.databrickscfg
+          echo "cluster_id = $DATABRICKS_TEST_CLUSTER_ID" >> ~/.databrickscfg
+      - run: |
+          source $(poetry env info --path)/bin/activate
+          pytest tests/integration --cov
+
+  e2e:
+    name: "Building and Running tests"
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out this repo, so that this workflow can access it.
+      - uses: actions/checkout@v3
+
+      # Download the Databricks CLI.
+      # See https://github.com/databricks/setup-cli
+      - uses: databricks/setup-cli@main
+
+      # Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
+      - run: curl -sSL https://install.python-poetry.org | python3 -
+
+      # Install test dependencies
+      - run: poetry install -only test
+
+      - run: databricks bundle build
+      - run: |
+          source $(poetry env info --path)/bin/activate
+          pytest tests/e2e --cov
+        env:
+          DATABRICKS_TEST_CLUSTER_ID: ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}
+
+
   # Used by the "pipeline_update" job to deploy the bundle.
   # Bundle validation is automatically performed as part of this deployment.
   # If validation fails, this workflow fails.
