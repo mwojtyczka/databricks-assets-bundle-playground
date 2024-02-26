@@ -15,7 +15,7 @@ resources:
 
       email_notifications:
         on_failure:Ï
-          - wmj1fe@bosch.com
+          - marcin.wojtyczka@databricks.com
 
       tasks:
         - task_key: notebook_task

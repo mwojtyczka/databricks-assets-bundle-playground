@@ -19,7 +19,7 @@ setup(
     # to ensure that changes to wheel package are picked up when used on all-purpose clusters
     version=marcin_project.__version__ + "+" + datetime.datetime.utcnow().strftime("%Y%m%d.%H%M%S"),
     url="https://databricks.com",
-    author="wmj1fe@bosch.com",
+    author="marcin.wojtyczka@databricks.com",
     description="wheel file based on marcin_project/src",
     packages=find_packages(where='./src'),
     package_dir={'': 'src'},

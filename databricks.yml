@@ -23,9 +23,9 @@ targets:
     default: true
     workspace:
       host: https://adb-8870486534760962.2.azuredatabricks.net
-    # default user name to use for all jobs in this environment
-    run_as:
-      user_name: wmj1fe@bosch.com
+    # default user name to use for all jobs in this environment, otherwise use the principal that deploys the job
+    #run_as:
+    #  user_name: marcin.wojtyczka@databricks.com
 
   # The 'dev' target, for development purposes. This target is the default.
   qa:
