@@ -38,7 +38,7 @@ targets:
       host: https://adb-8870486534760962.2.azuredatabricks.net
     # default service principal to use for all jobs in this environment
     run_as:
-      service_principal_name: 5a0e4887-c924-4646-9eda-ff8eb38924f3 #sp-databricks-ping
+      service_principal_name: 5a0e4887-c924-4646-9eda-ff8eb38924f3
 
   # The 'prod' target, used for production deployment.
   prod:
@@ -51,4 +51,4 @@ targets:
       root_path: /Shared/.bundle/prod/${bundle.name}
     # default service principal to use for all jobs in this environment
     run_as:
-      service_principal_name: 5a0e4887-c924-4646-9eda-ff8eb38924f3 #sp-databricks-ping
+      service_principal_name: 5a0e4887-c924-4646-9eda-ff8eb38924f3
