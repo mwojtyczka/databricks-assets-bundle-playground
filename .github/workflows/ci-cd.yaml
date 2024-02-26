@@ -1,26 +1,16 @@
 # Based on: https://learn.microsoft.com/en-us/azure/databricks/dev-tools/bundles/ci-cd
-
 name: "ci-cd"
 
-# Ensure that only a single job or workflow using the same concurrency group
-# runs at a time.
+# Ensure that only a single job or workflow using the same concurrency group runs at a time.
 concurrency: 1
 
-# Trigger this workflow whenever a pull request is pushed to the repo's
-# main branch.
+# Trigger this workflow upon commit to main branch
 on:
   push:
     branches:
       - main
 
-# Anchors are not supporeted in Github Actions!
-# reusable code across github actions jobs
-#setup_databricks_profile: &setup_databricks_profile |
-#  echo "[DEFAULT]" >> ~/.databrickscfg
-#  echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
-#  echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
-#  echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
-#  echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
+# Note that anchors are not supported in Github Actions!
 
 jobs:
   build-and-ut:
