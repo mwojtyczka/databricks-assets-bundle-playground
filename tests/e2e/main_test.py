@@ -14,8 +14,8 @@ def test_main():
 
     ctx = w.command_execution.create(cluster_id=config.cluster_id, language=Language.SQL).result()
     command = "SELECT * FROM samples.nyctaxi.trips LIMIT 5;"
-    results = w.command_execution.execute_and_wait(cluster_id=config.cluster_id, command=command, context_id=ctx.id, language=Language.SQL).result()
-    assert len(results.results.data) == 5
+    results = w.command_execution.execute_and_wait(cluster_id=config.cluster_id, command=command, context_id=ctx.id, language=Language.SQL).results
+    assert len(results.data) == 5
 
 
 def get_job_id(w):
