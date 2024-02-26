@@ -72,8 +72,8 @@ jobs:
     name: "Deploy Jobs in QA"
     runs-on: ubuntu-latest
 
-    needs:
-      - run-it
+    #needs:
+    #  - run-it
 
     steps:
       - uses: actions/checkout@v3
