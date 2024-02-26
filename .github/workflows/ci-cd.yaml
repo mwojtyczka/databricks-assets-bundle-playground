@@ -13,17 +13,14 @@ on:
     branches:
       - main
 
+# Anchors are not supporeted in Github Actions!
 # reusable code across github actions jobs
-setup_databricks_profile: &setup_databricks_profile |
-  echo "[DEFAULT]" >> ~/.databrickscfg
-  echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
-  echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
-  echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
-  echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
-
-# Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
-install_poetry: &install_poetry |
-  curl -sSL https://install.python-poetry.org | python3 -
+#setup_databricks_profile: &setup_databricks_profile |
+#  echo "[DEFAULT]" >> ~/.databrickscfg
+#  echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
+#  echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
+#  echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
+#  echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
 
 jobs:
   build-and-ut:
@@ -38,7 +35,8 @@ jobs:
       # See https://github.com/databricks/setup-cli
       - uses: databricks/setup-cli@main
 
-      - run: *install_poetry
+      # Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
+      - run: curl -sSL https://install.python-poetry.org | python3 -
 
       # Install test dependencies
       - run: poetry install
@@ -58,9 +56,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@main
-      - run: *install_poetry
+      - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: poetry install
-      - run: *setup_databricks_profile
+      - run: |
+          echo "[DEFAULT]" >> ~/.databrickscfg
+          echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
+          echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
+          echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
+          echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
       - run: |
           source $(poetry env info --path)/bin/activate
           pytest tests/integration --cov
@@ -75,7 +78,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@main
-      - run: *install_poetry
+      - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: databricks bundle deploy --target qa
         working-directory: .
         env:
@@ -92,9 +95,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@main
-      - run: *install_poetry
+      - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: poetry install
-      - run: *setup_databricks_profile
+      - run: |
+          echo "[DEFAULT]" >> ~/.databrickscfg
+          echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
+          echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
+          echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
+          echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
       - run: |
           source $(poetry env info --path)/bin/activate
           pytest tests/e2e --cov
@@ -109,7 +117,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@main
-      - run: *install_poetry
+      - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: databricks bundle deploy --target prod
         working-directory: .
         env:
@@ -126,7 +134,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@main
-      - run: *install_poetry
+      - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: databricks bundle run marcin_project_job_prod --refresh-all --target prod
         working-directory: .
         env:
