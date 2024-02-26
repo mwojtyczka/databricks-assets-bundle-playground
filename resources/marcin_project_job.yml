@@ -24,7 +24,7 @@ resources:
           depends_on:
             - task_key: notebook_task
           pipeline_task:
-            pipeline_id: ${resources.pipelines.marcin_project_pipeline.id}
+            pipeline_id: ${resources.pipelines.marcin_project_dlt.id}
         
         - task_key: main_task
           depends_on:

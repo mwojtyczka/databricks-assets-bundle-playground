@@ -95,6 +95,7 @@ For e2e testing, please use `pytest`:
 ```
 source $(poetry env info --path)/bin/activate
 pytest tests/e2e --cov
+```
 
 ### Reinstalling virtual env
 

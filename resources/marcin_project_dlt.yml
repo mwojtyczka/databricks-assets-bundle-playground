@@ -1,8 +1,8 @@
 # The main pipeline for marcin_project
 resources:
   pipelines:
-    marcin_project_pipeline:
-      name: marcin_project_pipeline_${bundle.target}
+    marcin_project_dlt:
+      name: marcin_project_dlt_${bundle.target}
       target: marcin_project_${bundle.environment}
       libraries:
         - notebook:
