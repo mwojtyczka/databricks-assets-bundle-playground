@@ -9,7 +9,7 @@ def test_main():
     w = WorkspaceClient()  # use DEFAULT profile
     config = Config()
 
-    jobs = w.jobs.list(name="marcin_project_job_dev")
+    jobs = w.jobs.list(name="marcin_project_job_qa")
     job_id = next(job for job in jobs).job_id
     w.jobs.run_now_and_wait(job_id)
 
