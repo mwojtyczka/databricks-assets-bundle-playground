@@ -1,0 +1,134 @@
+# Based on: https://learn.microsoft.com/en-us/azure/databricks/dev-tools/bundles/ci-cd
+
+name: "ci-cd"
+
+# Ensure that only a single job or workflow using the same concurrency group
+# runs at a time.
+concurrency: 1
+
+# Trigger this workflow whenever a pull request is pushed to the repo's
+# main branch.
+on:
+  push:
+    branches:
+      - main
+
+# reusable code across github actions jobs
+setup_databricks_profile: &setup_databricks_profile |
+  echo "[DEFAULT]" >> ~/.databrickscfg
+  echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
+  echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
+  echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
+  echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
+
+# Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
+install_poetry: &install_poetry |
+  curl -sSL https://install.python-poetry.org | python3 -
+
+jobs:
+  build-and-ut:
+    name: "Build and Run Unit Tests"
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out this repo, so that this workflow can access it.
+      - uses: actions/checkout@v3
+
+      # Download the Databricks CLI.
+      # See https://github.com/databricks/setup-cli
+      - uses: databricks/setup-cli@main
+
+      - run: *install_poetry
+
+      # Install test dependencies
+      - run: poetry install
+
+      - run: databricks bundle build
+      - run: |
+          source $(poetry env info --path)/bin/activate
+          pytest tests/unit --cov
+
+  run-it:
+    name: "Run Integration Tests"
+    runs-on: ubuntu-latest
+
+    needs:
+      - build-and-ut
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: databricks/setup-cli@main
+      - run: *install_poetry
+      - run: poetry install
+      - run: *setup_databricks_profile
+      - run: |
+          source $(poetry env info --path)/bin/activate
+          pytest tests/integration --cov
+
+  deploy-qa:
+    name: "Deploy Jobs in QA"
+    runs-on: ubuntu-latest
+
+    needs:
+      - integration-test
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: databricks/setup-cli@main
+      - run: *install_poetry
+      - run: databricks bundle deploy --target qa
+        working-directory: .
+        env:
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+  run-e2e:
+    name: "Run End to End Tests"
+    runs-on: ubuntu-latest
+
+    needs:
+      - deploy-qa
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: databricks/setup-cli@main
+      - run: *install_poetry
+      - run: poetry install
+      - run: *setup_databricks_profile
+      - run: |
+          source $(poetry env info --path)/bin/activate
+          pytest tests/e2e --cov
+
+  deploy-prod:
+    name: "Deploy Jobs in Prod"
+    runs-on: ubuntu-latest
+
+    needs:
+      - e2e
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: databricks/setup-cli@main
+      - run: *install_poetry
+      - run: databricks bundle deploy --target prod
+        working-directory: .
+        env:
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+  run-prod:
+    name: "Run Jobs in Prod"
+    runs-on: ubuntu-latest
+
+    needs:
+      - e2e
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: databricks/setup-cli@main
+      - run: *install_poetry
+      - run: databricks bundle run marcin_project_job_prod --refresh-all --target prod
+        working-directory: .
+        env:
+          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
+          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}

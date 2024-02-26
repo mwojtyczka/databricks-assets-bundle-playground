@@ -8,3 +8,5 @@ scratch/**
 !scratch/README.md
 .idea/
 .vscode/
+.coverage
+poetry.lock
