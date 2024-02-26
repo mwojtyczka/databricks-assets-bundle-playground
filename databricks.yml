@@ -39,7 +39,7 @@ targets:
     workspace:
       host: https://adb-8870486534760962.2.azuredatabricks.net
     run_as:
-      service_principal_name: sp-databricks-ping
+      service_principal_name: 5a0e4887-c924-4646-9eda-ff8eb38924f3 #sp-databricks-ping
 
   # The 'prod' target, used for production deployment.
   prod:
@@ -51,4 +51,4 @@ targets:
       # We only have a single deployment copy for production, so we use a shared path.
       root_path: /Shared/.bundle/prod/${bundle.name}
     run_as:
-      service_principal_name: sp-databricks-ping
+      service_principal_name: 5a0e4887-c924-4646-9eda-ff8eb38924f3 #sp-databricks-ping
