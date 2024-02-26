@@ -10,3 +10,7 @@ resources:
 
       configuration:
         bundle.sourcePath: /Workspace/${workspace.file_path}/src
+
+      # overwrite the default run_as from the bundle
+      run_as:
+        service_principal_name: 5a0e4887-c924-4646-9eda-ff8eb38924f3 #sp-databricks-ping

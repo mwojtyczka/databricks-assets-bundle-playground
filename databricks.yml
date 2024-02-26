@@ -23,9 +23,8 @@ targets:
     default: true
     workspace:
       host: https://adb-8870486534760962.2.azuredatabricks.net
+    # default user name to use for all jobs in this environment
     run_as:
-      # This runs as wmj1fe@bosch.com in production. We could also use a service principal here
-      # using service_principal_name (see https://docs.databricks.com/dev-tools/bundles/permissions.html).
       user_name: wmj1fe@bosch.com
 
   # The 'dev' target, for development purposes. This target is the default.
@@ -37,6 +36,7 @@ targets:
     mode: development
     workspace:
       host: https://adb-8870486534760962.2.azuredatabricks.net
+    # default service principal to use for all jobs in this environment
     run_as:
       service_principal_name: 5a0e4887-c924-4646-9eda-ff8eb38924f3 #sp-databricks-ping
 
@@ -49,5 +49,6 @@ targets:
       host: https://adb-8870486534760962.2.azuredatabricks.net
       # We only have a single deployment copy for production, so we use a shared path.
       root_path: /Shared/.bundle/prod/${bundle.name}
+    # default service principal to use for all jobs in this environment
     run_as:
       service_principal_name: 5a0e4887-c924-4646-9eda-ff8eb38924f3 #sp-databricks-ping
