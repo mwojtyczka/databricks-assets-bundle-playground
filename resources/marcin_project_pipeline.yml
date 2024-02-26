@@ -2,7 +2,7 @@
 resources:
   pipelines:
     marcin_project_pipeline:
-      name: marcin_project_pipeline
+      name: marcin_project_pipeline_${bundle.target}
       target: marcin_project_${bundle.environment}
       libraries:
         - notebook:

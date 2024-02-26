@@ -2,7 +2,7 @@
 resources:
   jobs:
     marcin_project_job:
-      name: marcin_project_job
+      name: marcin_project_job_${bundle.target}
 
       schedule:
         # Run every day at 8:37 AM

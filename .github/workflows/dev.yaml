@@ -71,8 +71,12 @@ jobs:
           source $(poetry env info --path)/bin/activate
           pytest tests/integration --cov
 
-  e2e:
-    name: "Run End to End Tests"
+
+  # Used by the "pipeline_update" job to deploy the bundle.
+  # Bundle validation is automatically performed as part of this deployment.
+  # If validation fails, this workflow fails.
+  deploy-dev:
+    name: "Deploy Jobs in Dev"
     runs-on: ubuntu-latest
 
     needs:
@@ -89,15 +93,34 @@ jobs:
       # Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
       - run: curl -sSL https://install.python-poetry.org | python3 -
 
-      # Install test dependencies
-      - run: poetry install
-
-      - run: databricks bundle deploy
+      # Deploy the bundle to the "dev" target as defined
+      # in the bundle's settings file.
+      - run: databricks bundle deploy --target dev
         working-directory: .
         env:
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
-          DATABRICKS_BUNDLE_ENV: dev
+
+  e2e:
+    name: "Run End to End Tests"
+    runs-on: ubuntu-latest
+
+    needs:
+      - deploy-dev
+
+    steps:
+      # Check out this repo, so that this workflow can access it.
+      - uses: actions/checkout@v3
+
+      # Download the Databricks CLI.
+      # See https://github.com/databricks/setup-cli
+      - uses: databricks/setup-cli@main
+
+      # Install poetry: https://python-poetry.org/docs/#installing-with-the-official-installer
+      - run: curl -sSL https://install.python-poetry.org | python3 -
+
+      # Install test dependencies
+      - run: poetry install
 
         # Setup databricks profile
       - run: |
@@ -108,15 +131,12 @@ jobs:
       - run: |
           source $(poetry env info --path)/bin/activate
           pytest tests/e2e --cov
-        env:
-          DATABRICKS_TEST_CLUSTER_ID: ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}
-
 
   # Used by the "pipeline_update" job to deploy the bundle.
   # Bundle validation is automatically performed as part of this deployment.
   # If validation fails, this workflow fails.
-  deploy:
-    name: "Deploy Jobs"
+  deploy-prod:
+    name: "Deploy Jobs in Prod"
     runs-on: ubuntu-latest
 
     needs:
@@ -135,21 +155,19 @@ jobs:
 
       # Deploy the bundle to the "dev" target as defined
       # in the bundle's settings file.
-      - run: databricks bundle deploy
+      - run: databricks bundle deploy --target prod
         working-directory: .
         env:
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
-          DATABRICKS_BUNDLE_ENV: dev
 
-  # Validate, deploy, and then run the bundle.
   pipeline_update:
-    name: "Run Jobs"
+    name: "Run Jobs in Prod"
     runs-on: ubuntu-latest
 
     # Run the "deploy" job first.
     needs:
-      - deploy
+      - e2e
 
     steps:
       # Check out this repo, so that this workflow can access it.
@@ -163,9 +181,8 @@ jobs:
 
       # Run the Databricks workflow named "my-job" as defined in the
       # bundle that was just deployed.
-      - run: databricks bundle run marcin_project_job --refresh-all
+      - run: databricks bundle run marcin_project_job_prod --refresh-all --target prod
         working-directory: .
         env:
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
           DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
-          DATABRICKS_BUNDLE_ENV: dev

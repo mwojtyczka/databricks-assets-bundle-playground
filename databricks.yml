@@ -23,6 +23,10 @@ targets:
     default: true
     workspace:
       host: https://adb-8870486534760962.2.azuredatabricks.net
+    run_as:
+      # This runs as wmj1fe@bosch.com in production. We could also use a service principal here
+      # using service_principal_name (see https://docs.databricks.com/dev-tools/bundles/permissions.html).
+      user_name: wmj1fe@bosch.com
 
   ## Optionally, there could be a 'qa' target here.
   ## (See Databricks docs on CI/CD at https://docs.databricks.com/dev-tools/bundles/index.html.)
@@ -43,5 +47,4 @@ targets:
     run_as:
       # This runs as wmj1fe@bosch.com in production. We could also use a service principal here
       # using service_principal_name (see https://docs.databricks.com/dev-tools/bundles/permissions.html).
-      user_name: wmj1fe@bosch.com
-    
+      user_name: sp-databricks-ping
