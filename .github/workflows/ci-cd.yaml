@@ -105,14 +105,6 @@ jobs:
       - run-e2e
 
     steps:
-      - uses: trstringer/manual-approval@v1
-        with:
-          minimum-approvals: 1
-          issue-title: "Deploying to prod from qa"
-          issue-body: "Please approve or deny the deployment."
-          exclude-workflow-initiator-as-approver: false
-          additional-approved-words: ''
-          additional-denied-words: ''
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@main
       - run: curl -sSL https://install.python-poetry.org | python3 -
