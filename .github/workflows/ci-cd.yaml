@@ -110,7 +110,7 @@ jobs:
       - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: |
           databricks bundle deploy --target prod
-          databricks bundle run marcin_project_job_prod --refresh-all --target prod
+          databricks bundle run marcin_project_job --refresh-all --target prod
         working-directory: .
         env:
           DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}

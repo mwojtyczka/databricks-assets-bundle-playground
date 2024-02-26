@@ -10,7 +10,7 @@ resources:
         timezone_id: Europe/Amsterdam
 
       email_notifications:
-        on_failure:
+        on_failure:Ï
           - wmj1fe@bosch.com
 
       tasks:
