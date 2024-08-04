@@ -87,7 +87,6 @@ jobs:
           echo "[DEFAULT]" >> ~/.databrickscfg
           echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
           echo "token = ${{ secrets.DATABRICKS_TEST_TOKEN }}" >> ~/.databrickscfg
-          echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
       - run: |
           source $(poetry env info --path)/bin/activate
           pytest tests/e2e --cov
