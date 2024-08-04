@@ -104,7 +104,7 @@ jobs:
       - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: |
           databricks bundle deploy --target prod
-          # specify the of the job node here as defined in the job.yml (not the job name!)
+          # specify the job node here as defined in the job.yml (not the job name!)
           databricks bundle run marcin_project_job --refresh-all --target prod
         working-directory: .
         env:
