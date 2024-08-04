@@ -10,11 +10,9 @@ on:
     branches:
       - main
 
-# Note that anchors are not supported in Github Actions!
-
 jobs:
-  build-and-ut:
-    name: "Build and Run Unit Tests"
+  build:
+    name: "Build the project and run unit tests"
     runs-on: ubuntu-latest
 
     steps:
@@ -37,11 +35,11 @@ jobs:
           pytest tests/unit --cov
 
   run-it:
-    name: "Run Integration Tests"
+    name: "Run integration tests"
     runs-on: ubuntu-latest
 
     needs:
-      - build-and-ut
+      - build
 
     steps:
       - uses: actions/checkout@v3
@@ -51,15 +49,13 @@ jobs:
       - run: |
           echo "[DEFAULT]" >> ~/.databrickscfg
           echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
-          echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
-          echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
-          echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
+          echo "token = ${{ secrets.DATABRICKS_TEST_TOKEN }}" >> ~/.databrickscfg
       - run: |
           source $(poetry env info --path)/bin/activate
           pytest tests/integration --cov
 
   deploy-qa:
-    name: "Deploy Jobs in QA"
+    name: "Deploy Jobs in QA for end to end tests"
     runs-on: ubuntu-latest
 
     needs:
@@ -72,8 +68,7 @@ jobs:
       - run: databricks bundle deploy --target qa
         working-directory: .
         env:
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TEST_TOKEN }}
 
   run-e2e:
     name: "Run End to End Tests"
@@ -90,8 +85,7 @@ jobs:
       - run: |
           echo "[DEFAULT]" >> ~/.databrickscfg
           echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
-          echo "client_id = ${{ secrets.DATABRICKS_CLIENT_ID }}" >> ~/.databrickscfg
-          echo "client_secret = ${{ secrets.DATABRICKS_CLIENT_SECRET }}" >> ~/.databrickscfg
+          echo "token = ${{ secrets.DATABRICKS_TEST_TOKEN }}" >> ~/.databrickscfg
           echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
       - run: |
           source $(poetry env info --path)/bin/activate
@@ -114,5 +108,4 @@ jobs:
           databricks bundle run marcin_project_job --refresh-all --target prod
         working-directory: .
         env:
-          DATABRICKS_CLIENT_ID: ${{ secrets.DATABRICKS_CLIENT_ID }}
-          DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_PROD_TOKEN }}

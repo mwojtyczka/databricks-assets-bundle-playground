@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "marcin-project"
 version = "0.1.0"
-description = ""
+description = "Example Databricks Assets Bundle Project"
 authors = ["mwojtyczka <marcin.wojtyczka@databricks.com>"]
 readme = "README.md"
 

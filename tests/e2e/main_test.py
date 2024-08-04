@@ -1,10 +1,10 @@
-# this test run the already deployed job
+# This end-to-end test run the deployed job and verifies the output
 
 from databricks.sdk import WorkspaceClient
 from databricks.sdk.service.compute import Language
 from databricks.sdk.core import Config
 
-# needs to run before: databricks bundle deploy --target dev
+# needs to run before: databricks bundle deploy --target qa
 def test_main():
     w = WorkspaceClient()  # use DEFAULT profile
     config = Config()

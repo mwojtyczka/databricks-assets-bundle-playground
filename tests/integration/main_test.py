@@ -3,11 +3,11 @@
 from databricks.connect import DatabricksSession
 from marcin_project import main
 
-# Create a new Databricks Connect session. If this fails,
+# This will create a new Databricks Connect session. If this fails,
 # check that you have configured Databricks Connect correctly.
 # See https://docs.databricks.com/dev-tools/databricks-connect.html
 
-# Take connection from .databrikcscfg file, DEFAULT profile)
+# Take connection from .databrikcscfg file, DEFAULT profile
 # https://docs.databricks.com/dev-tools/databricks-connect-ref.html#requirements
 spark = DatabricksSession.builder.getOrCreate()  # provide profile optionally: .profile("profile_name")
 
