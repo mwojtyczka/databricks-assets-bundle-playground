@@ -5,6 +5,13 @@ resources:
       name: marcin_project_dlt_${bundle.target}
       target: marcin_project_${bundle.environment}
       clusters:
+      - label: default
+        autoscale:
+          min_workers: 1
+          max_workers: 5
+          mode: ENHANCED
+        policy_id: E06216CAA0000360
+      - label: maintenance
         policy_id: E06216CAA0000360
       libraries:
         - notebook:
