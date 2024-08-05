@@ -4,7 +4,8 @@ resources:
     marcin_project_dlt:
       name: marcin_project_dlt_${bundle.target}
       target: marcin_project_${bundle.environment}
-      policy_id: E06216CAA0000360
+      clusters:
+        policy_id: E06216CAA0000360
       libraries:
         - notebook:
             path: ../src/dlt_pipeline.ipynb
