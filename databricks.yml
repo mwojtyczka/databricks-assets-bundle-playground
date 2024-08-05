@@ -42,6 +42,6 @@ targets:
       host: https://e2-demo-west.cloud.databricks.com/
       # We only have a single deployment copy for production, so we use a shared path.
       root_path: /Shared/.bundle/prod/${bundle.name}
-    # default service principal to use for all jobs in this environment
+    # default user to use for all jobs in this environment
     run_as:
-      service_principal_name: marcin.wojtyczka@databricks.com
+      user_name: marcin.wojtyczka@databricks.com
