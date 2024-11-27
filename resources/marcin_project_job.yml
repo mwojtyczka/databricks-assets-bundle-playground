@@ -1,4 +1,8 @@
 # The main job for marcin_project.
+variables:
+  cluster_policy_id:
+    default: E05E27B13F0003A0
+
 resources:
   jobs:
     marcin_project_job:
@@ -14,7 +18,7 @@ resources:
         timezone_id: Europe/Amsterdam
 
       email_notifications:
-        on_failure:Ï
+        on_failure:
           - marcin.wojtyczka@databricks.com
 
       tasks:
@@ -46,12 +50,13 @@ resources:
       job_clusters:
         - job_cluster_key: job_cluster
           new_cluster:
-            spark_version: 13.3.x-scala2.12
+            spark_version: 16.0.x-scala2.12
             node_type_id: i3.xlarge
-            policy_id: E05E27B13F0003A0
+            #policy_id: ${var.cluster_policy_id}
             autoscale:
                 min_workers: 1
                 max_workers: 2
+            data_security_mode: "SINGLE_USER"
 #      git_source:
 #        git_url: https://github.com/mwojtyczka/databricks-assets-bundle-playground.git
 #        git_provider: gitHub

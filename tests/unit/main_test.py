@@ -1,13 +1,13 @@
-# This test setup spark in local mode
-
 from marcin_project import functions
 from chispa.dataframe_comparer import *
 from pyspark.sql import SparkSession
 
-# instead of using pytest-spark
+# can also create local spark session manually instead of using pytest-spark
 #spark_session = SparkSession.builder.getOrCreate()
 
+
 def test_get_taxi(spark_session: SparkSession): # using pytest-spark
+    """This test is using spark in local mode"""
     schema = "trip_distance: double, fare_amount: double"
     test_df = spark_session.createDataFrame([[1.0, 1.0], [1.2, 6.0]], schema)
     expected_df = spark_session.createDataFrame([[1.2, 6.0]], schema)

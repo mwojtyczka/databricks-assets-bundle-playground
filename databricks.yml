@@ -22,7 +22,7 @@ targets:
     mode: development
     default: true
     workspace:
-      host: https://e2-demo-west.cloud.databricks.com/
+      host: https://e2-demo-field-eng.cloud.databricks.com/
 
   qa:
     # We use 'mode: development' to indicate this is a personal development copy:
@@ -31,7 +31,7 @@ targets:
     # - The 'development' mode is used for Delta Live Tables pipelines
     mode: development
     workspace:
-      host: https://e2-demo-west.cloud.databricks.com/
+      host: https://e2-demo-field-eng.cloud.databricks.com/
 
   # The 'prod' target, used for production deployment.
   prod:
@@ -39,9 +39,10 @@ targets:
     # Doing so enables strict verification of the settings below.
     mode: production
     workspace:
-      host: https://e2-demo-west.cloud.databricks.com/
+      host: https://e2-demo-field-eng.cloud.databricks.com/
       # We only have a single deployment copy for production, so we use a shared path.
       root_path: /Shared/.bundle/prod/${bundle.name}
     # default user to use for all jobs in this environment
     run_as:
       user_name: marcin.wojtyczka@databricks.com
+      #service_principal_name: "69511ed2-zb27-444c-9863-4bc8ff497637"

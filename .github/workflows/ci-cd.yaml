@@ -29,6 +29,7 @@ jobs:
       # Install test dependencies
       - run: poetry install
 
+      # Build the bundle and run unit tests
       - run: databricks bundle build
       - run: |
           source $(poetry env info --path)/bin/activate
@@ -46,14 +47,13 @@ jobs:
       - uses: databricks/setup-cli@main
       - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: poetry install
-      - run: |
-          echo "[DEFAULT]" >> ~/.databrickscfg
-          echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
-          echo "token = ${{ secrets.DATABRICKS_TEST_TOKEN }}" >> ~/.databrickscfg
-          echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
-      - run: |
+      - run:
           source $(poetry env info --path)/bin/activate
           pytest tests/integration --cov
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_TEST_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TEST_HOST }}
+          DATABRICKS_CLUSTER_ID: ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}
 
   deploy-qa:
     name: "Deploy Jobs in QA"
@@ -84,13 +84,12 @@ jobs:
       - run: curl -sSL https://install.python-poetry.org | python3 -
       - run: poetry install
       - run: |
-          echo "[DEFAULT]" >> ~/.databrickscfg
-          echo "host = ${{ secrets.DATABRICKS_TEST_HOST }}" >> ~/.databrickscfg
-          echo "token = ${{ secrets.DATABRICKS_TEST_TOKEN }}" >> ~/.databrickscfg
-          echo "cluster_id =  ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}" >> ~/.databrickscfg
-      - run: |
           source $(poetry env info --path)/bin/activate
           pytest tests/e2e --cov
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_TEST_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TEST_HOST }}
+          DATABRICKS_CLUSTER_ID: ${{ secrets.DATABRICKS_TEST_CLUSTER_ID }}
 
   deploy-and-run-prod:
     name: "Deploy and Start Jobs in Prod"
