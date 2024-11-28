@@ -1,4 +1,9 @@
 # The main pipeline for marcin_project
+
+variables:
+  cluster_policy_id:
+    default: E06216CAA0000360
+
 resources:
   pipelines:
     marcin_project_dlt:
@@ -10,9 +15,9 @@ resources:
           min_workers: 1
           max_workers: 5
           mode: ENHANCED
-        #policy_id: E06216CAA0000360
+        policy_id: ${var.cluster_policy_id}
       - label: maintenance
-        #policy_id: E06216CAA0000360
+        policy_id: ${var.cluster_policy_id}
       libraries:
         - notebook:
             path: ../src/dlt_pipeline.ipynb
