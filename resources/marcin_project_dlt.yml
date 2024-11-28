@@ -16,6 +16,7 @@ resources:
           max_workers: 5
           mode: ENHANCED
         policy_id: ${var.cluster_policy_id}
+        node_type_id: i3.xlarge
       - label: maintenance
         policy_id: ${var.cluster_policy_id}
       libraries:
