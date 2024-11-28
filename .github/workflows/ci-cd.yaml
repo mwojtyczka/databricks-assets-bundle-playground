@@ -16,6 +16,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: trstringer/manual-approval@v1.9.1
+        with:
+          issue-title: "Deploying to PROD from QA"
+          issue-body: "Please approve or deny the deployment to PROD."
+          additional-approved-words: ''
+          additional-denied-words: ''
       # Check out this repo, so that this workflow can access it.
       - uses: actions/checkout@v3
 
@@ -99,6 +105,12 @@ jobs:
       - run-e2e
 
     steps:
+      - uses: trstringer/manual-approval@v1.9.1
+        with:
+          issue-title: "Deploying to PROD from QA"
+          issue-body: "Please approve or deny the deployment to PROD."
+          additional-approved-words: ''
+          additional-denied-words: ''
       - uses: actions/checkout@v3
       - uses: databricks/setup-cli@main
       - run: curl -sSL https://install.python-poetry.org | python3 -

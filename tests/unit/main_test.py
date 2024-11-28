@@ -2,7 +2,7 @@ from marcin_project import functions
 from chispa.dataframe_comparer import *
 from pyspark.sql import SparkSession
 
-# can also create local spark session manually instead of using pytest-spark
+# You can use pytest-spark or create local spark session manually:
 #spark_session = SparkSession.builder.getOrCreate()
 
 
